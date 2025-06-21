@@ -1,0 +1,25 @@
+{% load static %}
+<!doctype html>
+
+<html class="no-js" lang="en">
+
+
+<head>
+ 
+{% if data == 0 %}
+{% include "ERP/includes/home_menu.html" %}
+{% elif data == 1 %}
+{% include "ERP/includes/admin_menu.html" %}
+{% elif data == 2 %}
+{% include "ERP/includes/user_menu.html" %}
+{% endif %}
+
+</head>
+
+<body>
+
+          
+   
+   
+</body>
+</html>

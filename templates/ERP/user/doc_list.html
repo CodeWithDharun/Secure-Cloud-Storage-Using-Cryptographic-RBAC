@@ -1,0 +1,146 @@
+ {% load static %}{% load rest_framework %}{% load common_function %}
+
+<html>
+<head>
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" type="text/css" media="all"/>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"> </script> 
+
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js" type="text/javascript"></script> 
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+<style>
+table {
+    border-collapse: collapse;
+    width: 100%;
+    
+}
+
+th, td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+.container{
+    width:100%;
+}
+.ch{
+  background-color: #D2691E;
+}
+</style>
+</head>
+
+<body>
+{% include "ERP/includes/user_menu.html" %}
+<br>
+<div style="float:center;">
+     <div class="panel-group">
+         <div class="panel panel-primary">
+         <div class="ch" style="height:50px;color: white;"><b>Document List</b>
+         
+        </div>
+         <div class="panel-body"> 
+        
+        <table>
+        <tr>
+        <th>Document ID</th>
+        <th>Document Name</th>
+        <th>Subject</th>
+        <th>Category</th>
+        <th>Upload Date</th>
+        <th>Document Decrypt</th>
+        <th>Document Download</th>       
+        </tr>
+        {% for lists_val in data %}
+        <tr>
+        <td>{{lists_val.id}}<input type="hidden" placeholder="docid" name="docid" id="docid" value="{{lists_val.id}}"></td>
+        <td>{{lists_val.filename}}</td>
+        <td>{{lists_val.subject}}</td>
+        <td>{{lists_val.category}}</td>
+        <td>{{lists_val.upload_date}}</td>
+        {% admin_resp docid=lists_val.id userid=userid as res%}
+        {% if access_value == "1" or res == 1 %}
+
+        <td><a onclick="decryptfile('{{lists_val.id}}')">Decrypt Document</a></td>
+        <td><a href="{{MEDIA_ROOT}}{{lists_val.filename}}" onclick="encryptfile('{{lists_val.id}}')">Download</a></td>        
+        {% elif access_value == "2" %}
+        <td><a onclick="decryptfile('{{lists_val.id}}')">Decrypt Document</a></td>        
+        <td><a href="/erp/document/view/{{lists_val.id}}/" onclick="encryptfile('{{lists_val.id}}')">View</a></td>
+        {% else %}
+        <td style="color:red;">Permission Denied</td>
+        {% endif %}
+        </tr>
+        {%endfor%}
+        
+        </table>       
+
+        
+        </div>         
+        </div>     
+        </div>
+     
+
+   
+ 
+</div>
+</body>
+
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+
+<script type="text/javascript">
+var fileid_var = 0;
+var crf_token = $('[name="csrfmiddlewaretoken"]').attr('value');
+
+$(document).ready(function(e) {
+    
+});
+
+function decryptfile(docid) { 
+    
+   //var docid=$("#docid").val();    
+   //console.log(docid);
+
+    $.ajax({
+                url:"../decryptfile/",
+                data : {
+                    "id" :docid,
+                },
+                contentType : 'application/json',
+
+                success : function(data) {
+                  console.log("success");
+                  alert("Document Decrypted, You can Download it.");
+                },
+    })   
+}
+function encryptfile(docid) { 
+    
+   //var docid=$("#docid").val();    
+   //console.log(docid);
+
+    $.ajax({
+                url:"../encryptfile/",
+                data : {
+                    "id" :docid,
+                },
+                contentType : 'application/json',
+
+                success : function(data) {
+                  console.log("success");
+                  //alert("file downloaded");
+                },
+    })   
+}
+
+
+</script>
+</html>

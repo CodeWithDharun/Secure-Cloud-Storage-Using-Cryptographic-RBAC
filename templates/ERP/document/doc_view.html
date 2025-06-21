@@ -1,0 +1,91 @@
+{% load static %}{% load rest_framework %}
+
+<html>
+<head>
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" type="text/css" media="all"/>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"> </script> 
+
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js" type="text/javascript"></script> 
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<style>
+table {
+    border-collapse: collapse;
+    width: 100%;    
+}
+th, td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+.ch{
+  background-color: #D2691E;
+}
+.containerr{
+    width:75%;   
+    position:absolute; 
+    left:240px; 
+    top:270px;
+}
+.subbtn{
+  width:55%;
+}
+</style>
+</head>
+
+<body oncontextmenu="return false;">
+{% include "ERP/includes/user_menu.html" %}
+<br>
+
+<form method="POST" name="frm" id="frm" class="containerr" enctype="multipart/form-data">
+    {% csrf_token %}
+     <div class="panel-group">
+         <div class="panel panel-primary">
+         <div class="ch" style="height:50px;color: white;"><b>Document View</b>
+        
+         <div style="float:right;"><a href="/erp/user/doc_list/"><i style="font-size:24px;font-size: 36px;color: white;" class="fa">&#xf06e;</i></a></div></div>
+        
+      
+        <table>
+
+          <tr>         
+          <td><textarea rows="18" cols="100">{{data}}</textarea>
+            <input type="hidden" id="id" name="id" value="{{id}}">
+          </td>
+          </tr>
+          
+        </table>
+       
+         
+        </div>
+     
+        </div>
+     
+
+   
+ </form> 
+
+</body>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+   <script>
+
+      $(document).ready(function() {
+         
+         $('.area').click(function(e) {
+            e.preventDefault();
+          });
+      });
+
+      document.onkeydown = function (e) 
+      {
+      return false;
+     }
+   </script>
+</html>
+
+

@@ -1,0 +1,109 @@
+ {% load static %}{% load rest_framework %}{% load common_function %}
+
+<html>
+<head>
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" type="text/css" media="all"/>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"> </script> 
+
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js" type="text/javascript"></script> 
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+<style>
+table {
+    border-collapse: collapse;
+    width: 100%;
+    
+}
+
+th, td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+.container{
+    width:100%;
+}
+.ch{
+  background-color: #D2691E;
+}
+</style>
+</head>
+
+<body>
+{% include "ERP/includes/admin_menu.html" %}
+<br>
+<div style="float:center;">
+     <div class="panel-group">
+         <div class="panel panel-primary">
+         <div class="ch" style="height:50px;color: white;"><b>User Request List</b>
+        </div>
+         <div class="panel-body"> 
+        
+        <table>
+        <tr>
+        <th>Document ID</th>
+        <th>Document Name</th>
+        <th>Request By</th>
+        <th>Allow Access</th>       
+        </tr>
+        {% for lists_val in data %}
+        <tr>
+        <td>{{lists_val.doc}}</td>
+        <td>{% show_single_field tableName="erp_tbldocument" show_field_name="filename" pk=lists_val.doc as docname %}{{docname}}</td>
+        <td>{% show_single_field tableName="auth_user" show_field_name="username" pk=lists_val.user as username %}{{username}}</td>
+        {%if lists_val.doc_response == 0%}
+        <td ><a onclick="allow_access('{{lists_val.id}}')" style="color: red;">Allow Access</a></td>
+        {%else%}
+        <td style="color: green;">Allowed Access</td>        
+        {%endif%}
+        </tr>
+        {%endfor%}
+        
+        </table>       
+
+        
+        </div>         
+        </div>     
+        </div>
+     
+
+   
+ 
+</div>
+</body>
+
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+
+<script type="text/javascript">
+var fileid_var = 0;
+var crf_token = $('[name="csrfmiddlewaretoken"]').attr('value');
+
+function allow_access(id) { 
+   console.log(id);
+    $.ajax({
+                url:"../allow_access/",
+                data : {
+                    "reqid" :id,
+                },
+                contentType : 'application/json',
+
+                success : function(data) {
+                  console.log("success");
+                  window.location.reload();
+                  //alert("Access Request sent to group");
+                },
+    })   
+}
+
+</script>
+</html>
